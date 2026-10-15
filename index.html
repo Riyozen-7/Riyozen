@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Riyozen – Reels & Shorts Editor</title>
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F7F9;--bg-rgb:246,247,249;--ink:#0F1115;--muted:#5D6270;--line:#DADDE4;--accent:#1F2A5A;--on-accent:#fff;--surface:#fff;box-sizing:border-box}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0F1115;--bg-rgb:15,17,21;--ink:#F2F3F6;--muted:#9BA0AE;--line:#272A33;--accent:#E9ECF7;--on-accent:#0F1115;--surface:#171A21}}
+:root[data-theme="dark"]{--bg:#0F1115;--bg-rgb:15,17,21;--ink:#F2F3F6;--muted:#9BA0AE;--line:#272A33;--accent:#E9ECF7;--on-accent:#0F1115;--surface:#171A21}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 "Manrope",system-ui,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;margin:0;line-height:1.02;letter-spacing:-.01em}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.nav{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) 32px 20px}
+.brand{font:400 28px "Instrument Serif",Georgia,serif;text-decoration:none}
+.nav nav a{margin-left:28px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);transition:color .2s}
+.nav nav a:hover{color:var(--ink)}
+main{position:relative;z-index:2}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;position:relative}
+.role{margin:0 0 22px;color:var(--muted);font-size:15px;font-weight:500}
+.hero h1{font-size:clamp(52px,8.5vw,112px);max-width:9.5ch}
+.lede{max-width:44ch;color:var(--muted);font-size:19px;margin:28px 0 36px}
+.btn{display:inline-block;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px;transition:opacity .2s,border-color .2s}
+.btn.primary{background:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{opacity:.86}
+.btn.ghost{border:1px solid var(--line);margin-left:10px}
+.btn.ghost:hover{border-color:var(--ink)}
+section.blk{padding:120px 0 40px}
+h2{font-size:clamp(40px,5.5vw,68px);margin-bottom:14px}
+.sub{color:var(--muted);max-width:50ch;margin:0 0 48px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,300px));gap:36px}
+figure{margin:0}
+video{width:100%;aspect-ratio:9/16;border-radius:14px;background:var(--surface);display:block;object-fit:cover;box-shadow:0 1px 0 var(--line),0 24px 48px -24px rgba(15,17,21,.35)}
+figcaption{padding:16px 2px 0}figcaption h3{font-size:26px}figcaption span{color:var(--muted);font-size:15px}
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr 1.3fr;gap:32px;padding:30px 0;border-bottom:1px solid var(--line)}
+.row h3{font-size:32px}.row p{margin:0;color:var(--muted)}
+.cta{padding:130px 0 70px}
+.mail{display:inline-block;font:400 clamp(26px,4.4vw,52px)/1.1 "Instrument Serif",Georgia,serif;text-decoration:none;border-bottom:1px solid var(--line);margin:0 0 32px;word-break:break-all;transition:border-color .2s}
+.mail:hover{border-color:var(--ink)}
+footer{margin-top:90px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.scroll-hint{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;z-index:4;transition:opacity .4s}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint i{display:block;width:1px;height:40px;background:linear-gradient(var(--ink),transparent);animation:drip 2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+[data-s]{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}
+[data-s].on{opacity:1;transform:none}
+@media(min-width:900px){.hero::after{content:"";position:absolute;inset:8% 42% 8% -12%;z-index:-1;background:radial-gradient(70% 60% at 35% 50%,rgba(var(--bg-rgb),.92),rgba(var(--bg-rgb),.6) 60%,transparent);pointer-events:none}}
+@media(max-width:700px){.nav{padding-left:20px;padding-right:20px}.nav nav a{margin-left:16px;font-size:13px}.wrap{padding:0 20px}.scroll-hint{display:none}.btn.ghost{margin:10px 0 0}.row{grid-template-columns:1fr;gap:8px}}
+@media(prefers-reduced-motion:reduce){[data-s]{opacity:1;transform:none;transition:none}.scroll-hint i{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="scene" aria-hidden="true"></canvas>
+<header class="nav">
+  <a class="brand" href="#top">Riyozen</a>
+  <nav><a href="#work">Work</a><a href="#services">Services</a><a href="#contact">Contact</a></nav>
+</header>
+
+<main id="top">
+  <header class="hero"><div class="wrap">
+    <p class="role">Reels and shorts editor for business brands</p>
+    <h1>Short videos, edited with care.</h1>
+    <p class="lede">I turn raw footage into polished reels: sharp cuts, clean captions, and an opening that earns the next three seconds.</p>
+    <div><a class="btn primary" href="#work">View work</a><a class="btn ghost" href="#contact">Get in touch</a></div>
+  </div></header>
+
+  <section class="blk" id="work"><div class="wrap" data-s>
+    <h2>Selected work</h2>
+    <p class="sub">Recent edits for business clients.</p>
+    <div class="grid">
+      <figure><video controls playsinline preload="metadata" poster="assets/img/poster-1.jpg" src="assets/video/reel-1.mp4"></video><figcaption><h3>The Hidden Cost of DIY Fulfillment</h3><span>3PL brand reel, 9:16</span></figcaption></figure>
+      <figure><video controls playsinline preload="metadata" poster="assets/img/poster-2.jpg" src="assets/video/reel-2.mp4"></video><figcaption><h3>Switch to a 3PL Before the Crisis</h3><span>3PL brand reel, 9:16</span></figcaption></figure>
+    </div>
+  </div></section>
+
+  <section class="blk" id="services"><div class="wrap" data-s>
+    <h2>Services</h2>
+    <p class="sub">You send the footage. I send back a video that is ready to post.</p>
+    <div class="rows">
+      <div class="row"><h3>Reel and Shorts editing</h3><p>Cuts, pacing, transitions and sound, sized for Instagram, TikTok and YouTube Shorts.</p></div>
+      <div class="row"><h3>Captions and hooks</h3><p>Styled subtitles and a strong opening, so viewers stop scrolling and keep watching.</p></div>
+      <div class="row"><h3>Monthly packages</h3><p>A set number of videos each month at a fixed price, with revisions included.</p></div>
+    </div>
+  </div></section>
+
+  <section class="cta" id="contact"><div class="wrap" data-s>
+    <h2>Have footage to edit?</h2>
+    <p class="sub">Tell me about your business and how many videos you need. I reply within a day.</p>
+    <a class="mail" href="mailto:habiburrashidrohan498@gmail.com">habiburrashidrohan498@gmail.com</a>
+    <div><a class="btn primary" href="https://wa.me/8801880471287">Message on WhatsApp</a></div>
+    <footer>&copy; 2026 Riyozen</footer>
+  </div></section>
+</main>
+<div class="scroll-hint" aria-hidden="true"><i></i></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var sections=document.querySelectorAll("[data-s]");
+var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("on")})},{threshold:.12});
+sections.forEach(function(s){io.observe(s)});
+var hint=document.querySelector(".scroll-hint");
+addEventListener("scroll",function(){hint.classList.toggle("hidden",scrollY>80)},{passive:true});
+if(typeof THREE==="undefined"){return}
+var canvas=document.getElementById("scene");
+var scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x0F1115,.03);
+var camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,100);camera.position.set(0,0,9);
+var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0,0);
+var mq=matchMedia("(prefers-color-scheme: dark)");
+var A=new THREE.Color(),B=new THREE.Color();
+function pal(){var dk=mq.matches;A.set(dk?0xE9ECF7:0x1F2A5A);B.set(dk?0x8F9BD8:0x5B6BB5);scene.fog.color.set(dk?0x0F1115:0xF6F7F9);
+if(typeof U!=="undefined"){U.uA.value.copy(A);U.uB.value.copy(B);pm.opacity=dk?.7:.55;shardMat.color.set(dk?0xB9C2E8:0x8A93B8);shardMat.emissive.set(dk?0x1a2040:0x000000);inner.material.color.set(dk?0x171A21:0xE4E7EF);inner.material.metalness=dk?.85:.3}}
+scene.add(new THREE.AmbientLight(0xffffff,.9));
+var key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(5,6,6);scene.add(key);
+var rim=new THREE.DirectionalLight(0xaab4ff,1.4);rim.position.set(-6,-3,-5);scene.add(rim);
+var world=new THREE.Group();scene.add(world);
+var cl=new THREE.PointLight(0xffffff,6,22,2);world.add(cl);
+function layout(){var w=innerWidth>=900;world.position.set(w?3.1:0,w?-.2:1.1,0);world.scale.setScalar(w?.92:.78)}layout();
+var U={uTime:{value:0},uNoise:{value:.32},uA:{value:A.clone()},uB:{value:B.clone()}};
+var coreMat=new THREE.ShaderMaterial({uniforms:U,transparent:true,wireframe:true,depthWrite:false,
+vertexShader:"uniform float uTime;uniform float uNoise;varying float vWave;varying vec3 vN;"+
+"float hash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}"+
+"float noise(vec3 p){vec3 i=floor(p);vec3 f=fract(p);f=f*f*(3.0-2.0*f);"+
+"return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}"+
+"void main(){vec3 pos=position;float n=noise(normalize(pos)*2.2+uTime*.35);float wave=sin(pos.y*1.6+uTime*1.2)*.5+.5;pos+=normalize(position)*((n-.5)*uNoise+wave*.12);vWave=wave;vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(pos,1.0);}",
+fragmentShader:"uniform vec3 uA;uniform vec3 uB;varying float vWave;varying vec3 vN;void main(){float f=pow(1.0-abs(vN.z),1.6);vec3 c=mix(uA,uB,vWave);gl_FragColor=vec4(c,.22+f*.4);}"});
+var core=new THREE.Mesh(new THREE.IcosahedronGeometry(2.1,16),coreMat);world.add(core);
+var inner=new THREE.Mesh(new THREE.IcosahedronGeometry(1.78,2),new THREE.MeshStandardMaterial({color:0xE4E7EF,roughness:.4,metalness:.3,flatShading:true}));world.add(inner);
+var shardMat=new THREE.MeshStandardMaterial({color:0x8A93B8,roughness:.3,metalness:.6,flatShading:true});var N=90,sd=[],shards=new THREE.InstancedMesh(new THREE.TetrahedronGeometry(.13,0),shardMat,N),d=new THREE.Object3D();
+for(var i=0;i<N;i++)sd.push({r:3.4+Math.random()*3.2,th:Math.random()*6.283,ph:Math.acos(2*Math.random()-1),sp:(Math.random()*.5+.12)*(Math.random()>.5?1:-1),spin:new THREE.Vector3(Math.random(),Math.random(),Math.random()).multiplyScalar(1.5),sc:.5+Math.random()*1.5,o:Math.random()*6.283});
+world.add(shards);
+var PN=1400,pos=new Float32Array(PN*3),col=new Float32Array(PN*3),tc=new THREE.Color();
+for(i=0;i<PN;i++){var r=6+Math.pow(Math.random(),.6)*26,th=Math.random()*6.283,ph=Math.acos(2*Math.random()-1);
+pos[i*3]=r*Math.sin(ph)*Math.cos(th);pos[i*3+1]=r*Math.cos(ph)*.55;pos[i*3+2]=r*Math.sin(ph)*Math.sin(th);
+tc.setRGB(.5,.55,.7).multiplyScalar(.6+Math.random()*.4);col[i*3]=tc.r;col[i*3+1]=tc.g;col[i*3+2]=tc.b}
+var pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.BufferAttribute(pos,3));pg.setAttribute("color",new THREE.BufferAttribute(col,3));
+var pm=new THREE.PointsMaterial({size:.07,vertexColors:true,transparent:true,opacity:.55,depthWrite:false});var parts=new THREE.Points(pg,pm);scene.add(parts);pal();(mq.addEventListener?mq.addEventListener("change",pal):mq.addListener(pal));
+var ptr={x:0,y:0},sm={x:0,y:0},prog=0,vel=0,last=scrollY;
+addEventListener("pointermove",function(e){ptr.x=e.clientX/innerWidth*2-1;ptr.y=e.clientY/innerHeight*2-1});
+function rs(){var m=document.documentElement.scrollHeight-innerHeight;prog=m>0?Math.min(scrollY/m,1):0;vel=scrollY-last;last=scrollY}
+addEventListener("scroll",rs,{passive:true});rs();
+addEventListener("resize",function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);layout()});
+var S=new THREE.Vector3(0,0,9),E=new THREE.Vector3(0,1.4,3.2),tg=new THREE.Vector3(),clock=new THREE.Clock();
+function place(t,dt){for(var i=0;i<N;i++){var s=sd[i];s.th+=s.sp*dt*.5;var w=Math.sin(t*1.2+s.o)*.35,r=s.r+w;
+d.position.set(r*Math.sin(s.ph)*Math.cos(s.th),r*Math.cos(s.ph)+Math.sin(t*.8+s.o)*.4,r*Math.sin(s.ph)*Math.sin(s.th));
+d.rotation.set(t*s.spin.x,t*s.spin.y+s.o,t*s.spin.z);d.scale.setScalar(s.sc);d.updateMatrix();shards.setMatrixAt(i,d.matrix)}shards.instanceMatrix.needsUpdate=true}
+function frame(){var dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
+sm.x+=(ptr.x-sm.x)*.05;sm.y+=(ptr.y-sm.y)*.05;
+U.uTime.value=t;U.uNoise.value=.3+Math.sin(t*.5)*.1;core.rotation.y=t*.16;core.rotation.x=Math.sin(t*.28)*.18;inner.rotation.copy(core.rotation);
+var p=1+Math.sin(t*1.1)*.02;core.scale.setScalar(p);inner.scale.setScalar(p);cl.intensity=5+Math.sin(t*1.4)*1.6;
+place(t,dt);parts.rotation.y=t*.02;parts.rotation.x=Math.sin(t*.1)*.05;
+tg.copy(S).lerp(E,prog);var px=1-prog*.5;
+camera.position.x+=(tg.x+sm.x*1.6*px-camera.position.x)*.08;camera.position.y+=(tg.y-sm.y*1.1*px-camera.position.y)*.08;camera.position.z+=(tg.z-camera.position.z)*.08;
+var b=Math.max(-.4,Math.min(.4,vel*.0015));core.rotation.z+=b;shards.rotation.y+=b*.5;
+camera.lookAt(0,0,0);renderer.render(scene,camera);requestAnimationFrame(frame)}
+if(rm){place(0,0);camera.lookAt(0,0,0);renderer.render(scene,camera)}else{frame()}
+canvas.addEventListener("webglcontextlost",function(e){e.preventDefault();canvas.style.display="none"});
+})();
+</script>
+</body>
+</html>
