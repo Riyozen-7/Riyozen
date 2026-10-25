@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riyozen — Video Editor</title>
+<meta name="description" content="Explore Riyozen's video editing portfolio, featuring carefully crafted visual stories, engaging edits, and creative video projects.">
+<meta name="theme-color" content="#F3F2EE">
+<meta property="og:type" content="website"><meta property="og:title" content="Riyozen — Video Editor">
+<meta property="og:description" content="Explore Riyozen's video editing portfolio, featuring carefully crafted visual stories, engaging edits, and creative video projects.">
+<meta property="og:image" content="assets/posters/q4-inventory.webp"><!-- replace with absolute URL of a 1200x630 image after deploying -->
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm')</script>
+</head>
+<body>
+<a class="skip" href="#work">Skip to work</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="nav" data-rv style="--d:.1s">
+  <a class="mark roll" href="#top" aria-label="Riyozen, back to top"><span data-t="RIYOZEN">RIYOZEN</span></a>
+  <nav aria-label="Primary"><a class="roll" href="#work"><span data-t="Work">Work</span></a><a class="roll" href="#about"><span data-t="About">About</span></a><a class="roll" href="#contact"><span data-t="Contact">Contact</span></a></nav>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="Introduction">
+    <div class="meta-row">
+      <p data-rv style="--d:.25s">RIYOZEN</p><p data-rv style="--d:.3s">VIDEO EDITOR / VISUAL STORYTELLER</p><p data-rv style="--d:.35s">IDX/RZ — <span class="yr"></span></p>
+    </div>
+    <div class="hero-main">
+      <div class="hero-copy">
+        <h1 class="display" data-rv data-split style="--d:.3s">Stories, shaped in motion.</h1>
+        <p class="tag" data-rv style="--d:.85s">Every frame has a purpose.</p>
+        <p class="hero-links" data-rv style="--d:1s"><a class="roll" href="#work"><span data-t="View selected work ↓">View selected work ↓</span></a><a class="roll" href="#contact"><span data-t="Get in touch ↗">Get in touch ↗</span></a></p>
+      </div>
+      <figure class="hero-fig" id="heroFig" data-rv style="--d:.5s"></figure>
+    </div>
+  </section>
+
+  <section id="work" class="work" aria-labelledby="work-h">
+    <div class="marquee" aria-hidden="true"><div id="mq"></div></div>
+    <div class="work-head">
+      <h2 id="work-h" class="label" data-rv>SELECTED WORK</h2>
+      <p class="label" data-rv style="--d:.1s">A collection of projects I've worked on.</p>
+    </div>
+    <ol class="list" id="grid"></ol>
+  </section>
+
+  <section id="about" class="about" aria-labelledby="about-h">
+    <h2 id="about-h" class="label" data-rv>ABOUT — IDX/RZ</h2>
+    <p class="statement" id="statement">I'm a video editor focused on shaping raw footage into clear, engaging visual stories. My approach combines deliberate pacing, thoughtful sound design, and purposeful motion to make every frame count.</p>
+    <ul class="does" data-rv><li>Pacing</li><li>Sound design</li><li>Motion</li></ul>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="contact-h">
+    <h2 id="contact-h" class="label" data-rv>CONTACT</h2>
+    <p class="display big" data-rv data-split>Have something worth telling?</p>
+    <p class="sub" data-rv style="--d:.3s">Let's make something meaningful.</p>
+    <p class="mail" data-rv style="--d:.45s"><a class="roll" href="mailto:habiburrashid498@gmail.com?subject=Video%20editing%20project"><span data-t="habiburrashid498@gmail.com ↗">habiburrashid498@gmail.com ↗</span></a></p>
+    <p class="aux" data-rv style="--d:.55s"><button type="button" id="copy" class="roll"><span data-t="Copy email">Copy email</span></button><a class="roll" href="https://wa.me/8801880471287?text=Hi%20Riyozen%2C%20I%27d%20like%20to%20talk%20about%20a%20video%20project." target="_blank" rel="noopener"><span data-t="WhatsApp +880 1880 471287 ↗">WhatsApp +880 1880 471287 ↗</span></a><span id="copied" class="sr" role="status"></span></p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="giant" aria-hidden="true">RIYOZEN</p>
+  <div class="foot-row"><p>Video Editor / Visual Storyteller</p><a class="roll" href="mailto:habiburrashid498@gmail.com"><span data-t="habiburrashid498@gmail.com">habiburrashid498@gmail.com</span></a><p>© <span class="yr"></span> Riyozen</p></div>
+</footer>
+
+<dialog id="viewer" aria-label="Video viewer">
+  <button type="button" class="close" id="close" aria-label="Close video">CLOSE ✕</button>
+  <div class="vframe" id="vframe"><video id="player" controls playsinline preload="none"></video></div>
+  <div class="cap"><h3 id="vt"></h3><p id="vd"></p></div>
+</dialog>
+<script src="projects.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
